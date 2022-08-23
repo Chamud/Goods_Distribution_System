@@ -1,0 +1,6 @@
+.git
+bin
+*lnk
+*bat
+tailwind.config.js
+tailwind.css
