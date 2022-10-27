@@ -1,0 +1,83 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block content %}
+{% load bootstrap_icons %}
+
+<div class="flex bg-gray-800 items-center justify-center p-5 shadow-lg shadow-indigo-500/50">
+	<h1 class="text-3xl text-white">Home</h1>
+</div>
+
+<div class="grid grid-cols-5 place-items-center py-6 px-4 text-white">
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<button class="place-self-end p-2 shadow-white shadow-sm rounded-xl" onclick="addpost()">
+		<a class="flex"> {% bs_icon 'plus-circle-fill' size='1.5em' %} <p class="hidden md:block ml-2">Add</p></a>
+	</button>
+</div>
+
+
+<div class="border-2 border-slate-400/30 rounded-3xl 
+			p-2 mx-2 mb-20
+			md:p-6 md:mx-6 md:mb-24">
+
+	<div class="my-6 mx-auto max-w-screen-xl p-4 border-l-2 border-t-2 border-slate-400 rounded-3xl ">
+	    <div class="md:flex rounded-lg py-6 px-4 border-2 border-r-4 border-b-4 rounded-br-none bg-indigo-100 border-blue-900/60">
+	        <img alt="Boiler plate" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80" class="h-56 w-96 border border-gray-50 rounded rounded-lg mx-auto md:mr-6">
+	        <div class="text-center md:text-left">
+	            <h2 class="text-3xl">What is boilerplate code? Why & when to use the boilerplate code?</h2>
+	            <span class="text-gray-500 py-1">10 days ago</span>
+	            <p class="text-lg">If you look around Github boilerplates, you will find plenty of boilerplate repositories for different programming languages or different common use cases(like a hackathon, game development, framework).</p>
+	        </div>
+	    </div>
+	</div>
+
+	<div class="my-6 mx-auto max-w-screen-xl p-4 border-l-2 border-t-2 border-slate-400 rounded-3xl ">
+	    <div class="md:flex rounded-lg py-6 px-4 border-2 border-r-4 border-b-4 rounded-br-none bg-indigo-100 border-blue-900/60">
+	        <img alt="Boiler plate" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80" class="h-56 w-96 border border-gray-50 rounded rounded-lg mx-auto md:mr-6">
+	        <div class="text-center md:text-left">
+	            <h2 class="text-3xl">What is boilerplate code? Why & when to use the boilerplate code?</h2>
+	            <span class="text-gray-500 py-1">10 days ago</span>
+	            <p class="text-lg">If you look around Github boilerplates, you will find plenty of boilerplate repositories for different programming languages or different common use cases(like a hackathon, game development, framework).</p>
+	        </div>
+	    </div>
+	</div>
+
+	<div class="my-6 mx-auto max-w-screen-xl p-4 border-l-2 border-t-2 border-slate-400 rounded-3xl ">
+	    <div class="md:flex rounded-lg py-6 px-4 border-2 border-r-4 border-b-4 rounded-br-none bg-indigo-100 border-blue-900/60">
+	        <img alt="Boiler plate" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80" class="h-56 w-96 border border-gray-50 rounded rounded-lg mx-auto md:mr-6">
+	        <div class="text-center md:text-left">
+	            <h2 class="text-3xl">What is boilerplate code? Why & when to use the boilerplate code?</h2>
+	            <span class="text-gray-500 py-1">10 days ago</span>
+	            <p class="text-lg">If you look around Github boilerplates, you will find plenty of boilerplate repositories for different programming languages or different common use cases(like a hackathon, game development, framework).</p>
+	        </div>
+	    </div>
+	</div>
+
+</div>
+
+<div id="addpost" class="hidden backdrop-blur-sm bg-white/30 fixed p-0 m-0 top-0 left-0 w-full h-full z-40">
+	
+</div>
+
+<script type="text/javascript">
+	function addpost(){
+		$.ajax({
+        url : '{{ request.path }}'+'post',
+        type : 'GET',
+        dataType:'html',
+        success : function(data) {  
+        	$( "#addpost" ).show();
+            $( "#addpost" ).html(data);
+            $("body").css({overflow: 'hidden',height: '100%'});
+        },
+        error : function(request,error)
+        {
+            console.log("Request: "+JSON.stringify(request));
+        }
+    });
+	}
+</script>
+
+{% endblock content %}

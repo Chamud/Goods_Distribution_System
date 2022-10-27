@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #bootsrat
+    'django_bootstrap_icons',
     #browser reload
     'django_browser_reload',
     #apps

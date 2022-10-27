@@ -1,0 +1,22 @@
+{% load static %}
+{% load django_browser_reload %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<title>Distribution System</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/static/css/styles.css" rel="stylesheet">
+		<script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+		{% django_browser_reload_script %}
+	</head>
+
+	<body class="bg-gradient-to-br from-gray-700 to-gray-900">
+		<!--{% include "app/loader.html" %}-->
+		{% block content %}{% endblock content %}
+		
+	</body>
+	<footer class="fixed bottom-0 w-[80%] ml-[10%]">
+		{% include "app/navbar.html" %}
+	</footer>
+</html>

@@ -1,0 +1,190 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block content %}
+{% load bootstrap_icons %}
+
+<section class="min-h-screen flex justify-center h-full">
+  <div class="w-full md:max-w-[60vw] lg:max-w-[40vw] bg-gray-300 shadow-lg rounded overflow-hidden my-12 mx-12 overflow-y-scroll ">
+    <div class="grid grid-cols-5 bg-gray-800 p-8">
+      <div></div>
+      <div class="col-span-3">
+        <p class="text-white text-center text-xl tracking-wider">
+          Add Post
+        </p>
+      </div>
+      <div class="bg-gray-700 place-self-end rounded-md">
+        <button class="flex text-white text-center tracking-wider right-0" onclick="location.href='/'">
+          {% bs_icon 'x-square-fill' size='1.5em' %}
+          <p class="text-white text-center tracking-wider px-2 hidden md:block">
+            Cancel
+          </p>
+        </button>
+      </div>
+    </div>
+    <form method="post" action="/post">
+      {% csrf_token %}
+
+      <div class="p-6">
+
+        <div class="flex flex-wrap">
+
+          <div class="w-full md:w-1/3 px-2 mb-6">
+            <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="pors">Product/Service</label>
+            <select class="block w-full bg-gray-400 text-gray-700 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray" name="pors" id="pors" onchange="gettype(this.value)" required> 
+              <option class="bg-slate-300" value="1" selected>Product</option>
+              <option class="bg-slate-300" value="2">Service</option>
+            </select>
+            <p class="text-red-500 text-xs italic"></p>
+          </div>
+
+          <div class="w-full md:w-2/3 px-2 mb-6">
+            <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="title">Title</label>
+            <input class="block w-full bg-gray-400 text-gray-700 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray" name="title" id="title" type="text" placeholder="Title" {% if form.title.value != None %}value="{{ form.title.value|stringformat:'s' }}"{% endif %}  required/>
+            <p class="text-red-500 text-xs italic">{{ form.title.errors.as_text }}</p>
+          </div>
+
+        </div>
+
+        <div class="w-full mb-6 px-2">
+          <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="description">Description</label>
+          <textarea class="appearance-none block w-full bg-gray-400 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="description" id="description" type="text" placeholder="Description"required>{% if form.description.value != None %} {{ form.description.value|stringformat:'s' }} {% endif %}</textarea>
+          <p class="text-red-500 text-xs italic">{{ form.description.errors.as_text }}</p>
+        </div>
+
+        <div class="flex flex-wrap ">
+
+          <div class="w-full md:w-1/3 px-2 mb-6">
+            <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="province">Province</label>
+            <select class="block w-full bg-gray-400 text-gray-700 border border-gray-300 rounded py-3 px-2 focus:outline-none focus:bg-white focus:border-gray" id="province" onchange="getlocations('districts',this.value);" required>
+              <option class="bg-slate-300" selected disabled>---</option>
+              {% for province in provinces %}
+                <option value={{ province.id }} class="bg-slate-300">{{ province.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="w-full md:w-1/3 px-2 mb-6">
+            <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="district">District</label>
+            <select class="block w-full bg-gray-400 text-gray-700 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray" id="district" onchange="getlocations('cities',this.value);" required>
+              <option class="bg-slate-300" selected disabled>---</option>
+            </select>
+          </div>
+
+          <div class="w-full md:w-1/3 px-2 mb-6">
+            <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="city">City</label>
+            <select class="block w-full bg-gray-400 text-gray-700 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray" name="cityid" id="city" required> 
+              <option class="bg-slate-300" selected disabled>---</option>
+            </select>
+            <p class="text-red-500 text-xs italic">{{ form.cityid.errors.as_text }}</p>
+          </div>
+
+        </div>
+
+        <div class="w-full mb-6 px-2">
+          <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="description">Contact</label>
+          <input class="appearance-none block w-full bg-gray-400 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="contact" id="contact" type="text" placeholder="Contact" 
+          {% if form.contact.value != None %}value="{{ form.contact.value|stringformat:'s' }}"{% endif %}  required/>
+          <p class="text-red-500 text-xs italic">{{ form.contact.errors.as_text }}</p>
+        </div>
+        <div class="w-full mb-6 px-2">
+          <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="description">Address</label>
+          <textarea class="appearance-none block w-full bg-gray-400 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="address" id="address" type="text" placeholder="Address" required>{% if form.address.value != None %} {{ form.address.value|stringformat:'s' }} {% endif %}</textarea>
+          <p class="text-red-500 text-xs italic">{{ form.address.errors.as_text }}</p>
+        </div>  
+
+        <div id="itemdata">
+          <div class="flex flex-wrap">
+            <div class="w-full md:w-1/2 px-2 mb-6">
+              <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="unit">Unit</label>
+              <select class="block w-full bg-gray-400 text-gray-700 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray" name="unit" id="unit" required> 
+                {% with unitdef="units" %}
+                  {% for unit in units %}
+                    <option value={{ unit.id }} class="bg-slate-300" {% if unit.name == unitdef %}selected{% endif %} >{{ unit.name }}</option>
+                  {% endfor %}
+                {% endwith %}
+              </select>
+            </div>
+
+            <div class="w-full md:w-1/2 px-2 mb-6">
+              <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="amount">Available Amount</label>
+              <input class="block w-full bg-gray-400 text-gray-700 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray" name="amount" id="amount" type="number" min="1" value="1" />
+            </div>
+          </div>
+
+          <div class="w-full mb-6 px-2">
+            <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="image">Image</label>
+            <input class="appearance-none block w-full bg-gray-400 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="image" id="image" type="file" accept=".png, .jpg" />
+          </div>
+
+          <div class="w-full mb-6 px-2">
+            <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="expdate">Expiary date / Estimated Stock Clearance</label>
+            <input class="appearance-none block w-full bg-gray-400 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="expdate" id="expdate" type="date" value="{{ expdt }}" />
+          </div>
+
+        </div>
+
+        <div id="servicedata" class="hidden">
+          <div class="w-full mb-6 px-2">
+            <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="email">Business Email</label>
+            <input class="appearance-none block w-full bg-gray-400 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="email" id="email" type="email"  />
+          </div>
+
+          <div class="w-full mb-6 px-2">
+            <label class="block uppercase tracking-wider text-gray-700 text-xs font-bold mb-2" for="datestimes">Available Days and times</label>
+            <input class="appearance-none block w-full bg-gray-400 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="datestimes" id="datestimes" type="text"  />
+          </div>
+        </div>      
+
+        <div class="flex justify-center">
+          <button class="shadow bg-gray-800 hover:bg-blue-900 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded" type="submit">
+            Post
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</section>
+
+<script type="text/javascript">
+
+  function gettype(i){
+    if(i==1){
+      $('#itemdata').show();
+      $('#servicedata').hide();
+      $('#datestimes').prop("required", false);
+      $('#email').prop("required", false);
+    }else{
+      $('#itemdata').hide();
+      $('#servicedata').show();
+      $('#datestimes').prop("required", true);
+      $('#email').prop("required", true);
+    }
+  }
+
+  function getlocations(linktxt, id){
+    $.ajax({
+        url : '{{ request.path }}/../profile/registration/'+linktxt+'/'+id,
+        type : 'GET',
+        dataType:'json',
+        success : function(data) {  
+            var list = data.context; 
+            for (var i = 0; i <= list.length - 1; i++) {
+                if(linktxt=='districts'){
+                  $( "#district" ).append("<option value='"+list[i].id+"' class='bg-slate-300'>"+list[i].name+"</option>");
+                  $('#city').children().not(':first').remove();
+                }else if(linktxt=='cities'){
+                  $( "#city" ).append("<option value='"+list[i].id+"' class='bg-slate-300'>"+list[i].name+"</option>");
+                }
+              }           
+        },
+        error : function(request,error)
+        {
+            console.log("Request: "+JSON.stringify(request));
+        }
+    });
+  }
+  
+</script>
+
+{% endblock content %}

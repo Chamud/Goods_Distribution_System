@@ -1,0 +1,21 @@
+{% extends "app/base.html" %}
+
+{% load bootstrap_icons %}
+{% load static %}
+{% block content %}
+
+<div class="flex bg-gray-800 items-center justify-center p-5 shadow-lg shadow-indigo-500/50">
+	<h1 class="text-3xl text-white">Profile</h1>
+</div>
+
+<div class="bg-gray-700 place-self-end rounded-md">
+  <button class="flex text-white text-center tracking-wider right-0" onclick="location.href='/profile/logout'">
+    {% bs_icon 'arrow-right-square-fill' size='1.5em' %}
+    <p class="text-white text-center tracking-wider px-2">
+      Logout
+    </p>
+  </button>
+</div>
+
+
+{% endblock content %}
