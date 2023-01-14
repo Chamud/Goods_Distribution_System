@@ -6,5 +6,108 @@
 	<h1 class="text-3xl text-white">Map</h1>
 </div>
 
+<div id="mapholder">         
+  <div id="map"></div>
+</div> 
+
+<script>
+mapboxgl.accessToken = '{{map_con}}';
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v11',
+  center: [80.7047272491285, 7.60808521895433],
+  zoom: 6
+});
+
+const geocoder = new MapboxGeocoder({
+                    accessToken: mapboxgl.accessToken,
+                    mapboxgl: mapboxgl
+                });
+
+map.addControl(geocoder);
+
+geocoder.on('result', function(e) {
+  console.log(e.result.center);
+  geocoder.clear();
+  var marker = new mapboxgl.Marker({ draggable: true, color: "pink" })
+    .setLngLat(e.result.center)
+    .addTo(map)
+});
+
+locatArr = [
+{% for loc in locate %}
+{
+  "type": "Feature",
+  "properties": {
+      "description":
+          "{% for obj in loc.data %}<strong>{{obj.title}}</strong><br>{% endfor %}<button onclick=\"location.href='city/{{loc.city}}'\">Show All</button>"
+  },
+  "geometry": {
+      "type": "Point",
+      "coordinates": [{{loc.X}}, {{loc.Y}}]
+  }
+},
+{% endfor %}
+]
+
+
+
+map.on('load', () => {
+  map.addSource('places', {
+      'type': 'geojson',
+      'data': {
+          'type': 'FeatureCollection',
+          'features': locatArr
+      }
+});
+
+         // Add a layer showing the places.
+map.addLayer({
+    'id': 'places',
+    'type': 'circle',
+    'source': 'places',
+    'paint': {
+        'circle-color': '#4264fb',
+        'circle-radius': 4,
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#ffffff'
+    }
+});
+
+     
+
+
+        // Create a popup, but don't add it to the map yet.
+const popup = new mapboxgl.Popup({
+    closeButton: true,
+    closeOnClick: true
+});
+
+map.on('mouseenter', 'places', (e) => {
+    // Change the cursor style as a UI indicator.
+    map.getCanvas().style.cursor = 'pointer';
+
+    // Copy coordinates array.
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    const description = e.features[0].properties.description;
+
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+
+    // Populate the popup and set its coordinates
+    // based on the feature found.
+    popup.setLngLat(coordinates).setHTML(description).addTo(map);
+});
+
+
+});
+map.addControl(new mapboxgl.NavigationControl());
+
+</script>
+
 
 {% endblock content %}

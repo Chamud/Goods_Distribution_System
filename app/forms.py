@@ -16,6 +16,13 @@ class CreateUserForm(UserCreationForm):
 		model = User
 		fields = ['username', 'email', 'first_name', 'last_name', 'nic', 'city', 'password1', 'password2']
 
+class UpdateUserForm(UserCreationForm):
+	city = forms.IntegerField()
+	class Meta:
+		model = User
+		fields = ['email', 'first_name', 'last_name', 'city']
+		exclude = ("password1", "password2",)
+
 class InformationForm(ModelForm):
 	cityid = forms.IntegerField()
 	description = forms.CharField(min_length=25)

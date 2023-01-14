@@ -8,6 +8,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="/static/css/styles.css" rel="stylesheet">
 		<script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/review.js' %}"></script>
+
+		<!--Map box-->
+		<link rel="stylesheet" href="{% static '/css/map.css' %}" type="text/css" media="all">
+		<link href="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css" rel="stylesheet">
+	    <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
+	    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+	    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+		<!--Dev-->
 		{% django_browser_reload_script %}
 	</head>
 

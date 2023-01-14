@@ -3,81 +3,243 @@
 {% block content %}
 {% load bootstrap_icons %}
 
-<div class="flex bg-gray-800 items-center justify-center p-5 shadow-lg shadow-indigo-500/50">
-	<h1 class="text-3xl text-white">Home</h1>
+<div class="flex bg-gray-800 items-center justify-center p-5 shadow-lg shadow-indigo-500/50 relative">
+	
+	<div class="absolute left-0 pl-4">
+		
+		{% if user.is_authenticated %}
+		      <h2 class="text-3xl text-white">Hello {{user.username}}!</h2>
+		    
+	    {% endif %}
+	</div>
+
+	<div><h1 class="text-3xl text-white hidden md:block">Welcome to SHARE INFO</h1></div>
+	
+	<div class="absolute right-0 pr-4">
+		<div class="bg-gray-700 place-self-end rounded-md m-3 p-2">
+			{% if user.is_authenticated %}
+			      
+			    <button class="flex text-white text-center tracking-wider right-0" onclick="logoutConf()">
+				    {% bs_icon 'person-x-fill' size='1.5em' %}
+				    <p class="text-white text-center tracking-wider px-2 hidden md:block">
+				      Logout
+				    </p>
+				</button>
+		    {% else %}
+				<button class="flex text-white text-center tracking-wider right-0" onclick="location.href='/profile/login'">
+		        	{% bs_icon 'person-plus-fill' size='1.5em' %}
+			        <p class="text-white text-center tracking-wider px-2 hidden md:block">
+			          Login
+			        </p>
+		      	</button>
+		    {% endif %}
+	    </div>
+	</div>
 </div>
 
-<div class="grid grid-cols-5 place-items-center py-6 px-4 text-white">
-	<div></div>
-	<div></div>
-	<div></div>
-	<div></div>
+<div class="grid grid-cols-3 place-items-center py-6 px-4 text-white">
+
+	<div>
+		{% if filter == 1 %}
+		<div>
+			Filtered by city - {{cityname}}
+		</div>
+		<div class="bg-slate-400">
+			<button class="flex text-white text-center tracking-wider right-0" onclick="location.href='/'">
+	          {% bs_icon 'x-square-fill' size='1.5em' %}
+	          <p class="text-white text-center tracking-wider px-2 hidden md:block">
+	            Remove Filters
+	          </p>
+        	</button>
+		</div>
+
+		{% endif %}
+	</div>
+
+
+	<div class="w-full flex justify-center">
+		{% with ftr_btn="w-16 md:w-32 h-full border-t-4 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/60 hover:bg-gray-800 hover:scale-[115%]  hover:z-50 flex justify-center py-1" %}
+
+		<button onclick="getHomaData(1)" id="itembtn" class="{{ftr_btn}} rounded-tl-3xl mr-1">{% bs_icon 'box-seam' size='1.5em' %} <p class="hidden md:block ml-1">Items</p></button> 
+		
+		<button onclick="getHomaData(2)" id="servicebtn" class="{{ftr_btn}} rounded-tr-3xl ml-1 scale-[110%] bg-gray-800">{% bs_icon 'briefcase' size='1.5em' %} <p class="hidden md:block ml-1">Services</p></button>
+
+		{% endwith %}
+	</div>
+
+
 	<button class="place-self-end p-2 shadow-white shadow-sm rounded-xl" onclick="addpost()">
 		<a class="flex"> {% bs_icon 'plus-circle-fill' size='1.5em' %} <p class="hidden md:block ml-2">Add</p></a>
 	</button>
-</div>
-
-
-<div class="border-2 border-slate-400/30 rounded-3xl 
-			p-2 mx-2 mb-20
-			md:p-6 md:mx-6 md:mb-24">
-
-	<div class="my-6 mx-auto max-w-screen-xl p-4 border-l-2 border-t-2 border-slate-400 rounded-3xl ">
-	    <div class="md:flex rounded-lg py-6 px-4 border-2 border-r-4 border-b-4 rounded-br-none bg-indigo-100 border-blue-900/60">
-	        <img alt="Boiler plate" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80" class="h-56 w-96 border border-gray-50 rounded rounded-lg mx-auto md:mr-6">
-	        <div class="text-center md:text-left">
-	            <h2 class="text-3xl">What is boilerplate code? Why & when to use the boilerplate code?</h2>
-	            <span class="text-gray-500 py-1">10 days ago</span>
-	            <p class="text-lg">If you look around Github boilerplates, you will find plenty of boilerplate repositories for different programming languages or different common use cases(like a hackathon, game development, framework).</p>
-	        </div>
-	    </div>
-	</div>
-
-	<div class="my-6 mx-auto max-w-screen-xl p-4 border-l-2 border-t-2 border-slate-400 rounded-3xl ">
-	    <div class="md:flex rounded-lg py-6 px-4 border-2 border-r-4 border-b-4 rounded-br-none bg-indigo-100 border-blue-900/60">
-	        <img alt="Boiler plate" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80" class="h-56 w-96 border border-gray-50 rounded rounded-lg mx-auto md:mr-6">
-	        <div class="text-center md:text-left">
-	            <h2 class="text-3xl">What is boilerplate code? Why & when to use the boilerplate code?</h2>
-	            <span class="text-gray-500 py-1">10 days ago</span>
-	            <p class="text-lg">If you look around Github boilerplates, you will find plenty of boilerplate repositories for different programming languages or different common use cases(like a hackathon, game development, framework).</p>
-	        </div>
-	    </div>
-	</div>
-
-	<div class="my-6 mx-auto max-w-screen-xl p-4 border-l-2 border-t-2 border-slate-400 rounded-3xl ">
-	    <div class="md:flex rounded-lg py-6 px-4 border-2 border-r-4 border-b-4 rounded-br-none bg-indigo-100 border-blue-900/60">
-	        <img alt="Boiler plate" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80" class="h-56 w-96 border border-gray-50 rounded rounded-lg mx-auto md:mr-6">
-	        <div class="text-center md:text-left">
-	            <h2 class="text-3xl">What is boilerplate code? Why & when to use the boilerplate code?</h2>
-	            <span class="text-gray-500 py-1">10 days ago</span>
-	            <p class="text-lg">If you look around Github boilerplates, you will find plenty of boilerplate repositories for different programming languages or different common use cases(like a hackathon, game development, framework).</p>
-	        </div>
-	    </div>
-	</div>
 
 </div>
+
+<div id="posts-wrapper" class="border-2 border-slate-400/30 rounded-3xl p-2 mx-2 mb-20 md:p-6 md:mx-6 md:mb-24"></div>
 
 <div id="addpost" class="hidden backdrop-blur-sm bg-white/30 fixed p-0 m-0 top-0 left-0 w-full h-full z-40">
-	
 </div>
 
 <script type="text/javascript">
-	function addpost(){
-		$.ajax({
-        url : '{{ request.path }}'+'post',
-        type : 'GET',
-        dataType:'html',
-        success : function(data) {  
-        	$( "#addpost" ).show();
-            $( "#addpost" ).html(data);
-            $("body").css({overflow: 'hidden',height: '100%'});
-        },
-        error : function(request,error)
-        {
-            console.log("Request: "+JSON.stringify(request));
-        }
-    });
+
+	var a = 0;
+	
+	function logoutConf(){
+		url = '{{ request.path }}'+'profile/logout';
+
+		if (confirm("Are you sure to logout?") == true) {
+			$.ajax({
+		        url : url,
+		        type : 'GET',
+		        dataType:'html',
+		        success : function(data) {
+		        	window.location = "{{ request.path }}";
+		        },
+		        error : function(request,error)
+		        {
+		            console.log("Request: "+JSON.stringify(request));
+		        }
+		    });
+		}
 	}
+
+	function editpost(id, typ){
+		if({{filter}}){
+			var urllink = '../../post/'+typ+'/'+id;
+		}else{
+			var urllink = 'post/'+typ+'/'+id;
+		}
+		
+		$.ajax({
+	        url : urllink,
+	        type : 'GET',
+	        dataType:'html',
+	        success : function(data) {  
+	        	$( "#addpost" ).show();
+	            $( "#addpost" ).html(data);
+	            $("body").css({overflow: 'hidden',height: '100%'});
+	        },
+	        error : function(request,error)
+	        {
+	            console.log("Request: "+JSON.stringify(request));
+	        }
+	    });
+	}
+
+
+	function addpost(){
+		editpost(0,1);
+	}
+
+	function getHomaData(i){
+		$('#servicebtn').toggleClass('scale-[110%] bg-gray-800');
+		$('#itembtn').toggleClass('scale-[110%] bg-gray-800');
+		var url = "{{ request.path }}";
+		if(!{{filter}})
+		{
+			if(i==1){
+				url += "items/0";
+			}else{
+				url += "services/0";
+			}
+		}else if(1=={{filter}}){
+			var cityid = url.split("/").pop();
+
+			url = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+			if(i==1){
+				url += "/filter/items/"+cityid;
+			}else{
+				url += "/filter/services/"+cityid;
+			}
+		}else{
+
+		}	
+		$.ajax({
+	        url : url,
+	        type : 'GET',
+	        dataType:'html',
+	        success : function(data) {
+	            $("#posts-wrapper").html(data);
+	        },
+	        error : function(request,error)
+	        {
+	            console.log("Request: "+JSON.stringify(request));
+	        }
+	    });
+
+	}
+	function showmore(id, typ, btn){
+		$(btn).hide()
+		var url = "{{ request.path }}";
+		if(typ==1){
+			url += "items/"+id;
+		}else{
+			url += "services/"+id;
+		}	
+		$.ajax({
+	        url : url,
+	        type : 'GET',
+	        dataType:'html',
+	        success : function(data) {
+	            $("#posts-wrapper").append(data);
+	        },
+	        error : function(request,error)
+	        {
+	            console.log("Request: "+JSON.stringify(request));
+	        }
+	    });
+	}
+
+	function deletepost(id){
+		if({{filter}}){
+			var urllink = '../../deletepost/'+id;
+		}else{
+			var urllink = 'deletepost/'+id;
+		}
+		if (confirm("Are you sure to delete this post?") == true) {
+			$.ajax({
+		        url : urllink,
+		        type : 'GET',
+		        dataType:'html',
+		        success : function(data) {
+		        	window.location = "{{ request.path }}";
+		        },
+		        error : function(request,error)
+		        {
+		            console.log("Request: "+JSON.stringify(request));
+		        }
+		    });
+		}
+	}
+
+	$( document ).ready(function() {
+	    getHomaData(1);
+	});
+
+	function review(rev, id){
+		a++;
+		if(a%2 != 0) {
+			return; 
+		}
+
+		var val = rev.getAttribute('value');
+
+		$.ajax({
+	        url : '{{ request.path }}'+'review/'+val+'/'+id,
+	        type : 'GET',
+	        dataType:'html',
+	        success : function(data) {
+
+	        	console.log("{{request.user.username}} on "+id+" a rating of "+val);
+	        },
+	        error : function(request,error)
+	        {
+	            console.log("Request: "+JSON.stringify(request));
+	        }
+	    });
+	    
+
+	}
+
 </script>
 
 {% endblock content %}
