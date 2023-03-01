@@ -1,0 +1,27 @@
+{% load bootstrap_icons %}
+
+{% with ftr_btn="w-16 md:w-32 h-full border-t-4 shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/60 hover:bg-gray-800 hover:scale-[115%] hover:rounded-t-3xl hover:z-50 flex justify-center py-1" homeurl="/" mapurl="/map" profurl="/profile" %}
+
+
+
+<div class="bg-sky-900 text-white bg-gray-900 p-3 rounded-t-3xl md:rounded-t-full" {% if request.path != mapurl %} {% if request.path != homeurl %} {% if request.path != profurl %} hidden {% endif %} {% endif %} {% endif %}>
+
+	<div class="w-full flex justify-center">		
+		<button onclick="location.href='map'" class="{{ftr_btn}} 
+		{% if request.path == mapurl %}scale-[115%] rounded-t-3xl shadow-lg shadow-cyan-500/90{% elif request.path == homeurl %}rounded-tl-3xl{% elif request.path == profurl %}rounded-tl-3xl{% endif %}
+		">{% bs_icon 'geo-alt-fill' size='1.5em' %} <p class="hidden md:block ml-1">Map</p></button> 
+		
+		<button onclick="location.href='/'" class="{{ftr_btn}} 
+		{% if request.path == mapurl %}rounded-tr-3xl{% elif request.path == homeurl %}scale-[115%] rounded-t-3xl  shadow-cyan-500/90{% elif request.path == profurl %}rounded-tl-3xl{% endif %}
+		">{% bs_icon 'house-fill' size='1.5em' %} <p class="hidden md:block ml-1">Home</p></button>
+		
+		<button onclick="location.href='profile'" class="{{ftr_btn}} 
+		{% if request.path == mapurl %}rounded-tr-3xl{% elif request.path == homeurl %}rounded-tr-3xl{% elif request.path == profurl %}scale-[115%] rounded-t-3xl  shadow-cyan-500/90{% endif %}
+		">{% bs_icon 'person-fill' size='1.5em' %} <p class="hidden md:block ml-1">Profile</p></button>
+
+	</div>
+
+	<hr class="mt-2 border-gray-200 mx-4 md:mx-8" />
+</div>
+
+{% endwith %}
