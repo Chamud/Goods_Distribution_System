@@ -1,0 +1,25 @@
+{% load bootstrap_icons %}
+<section class="min-h-screen flex justify-center items-center">
+  <div  class="w-full md:max-w-[60vw] lg:max-w-[40vw] bg-gray-300 shadow-lg rounded overflow-hidden my-16 m-8">
+
+  	<div class="m-5 text-red-700 grid grid-rows-4 gap-4 place-content-center">
+  		<div class="flex justify-center items-center">
+	        {% bs_icon 'exclamation-triangle-fill' size='3em' %}
+	    </div>
+	    <div class="flex justify-center items-center">
+	        <h2 class="text-3xl text-center text-justify">Oh snap!</h2>
+	    </div>
+	    <div class="flex justify-center items-center">
+	        <p class="text-lg text-center text-justify">{{error}}</p>
+	    </div>
+        <div class="bg-gray-700 place-self-end rounded-md w-64 p-4 flex justify-center items-center">
+	        <button class="flex text-white text-center tracking-wider right-0" onclick="location.href='/'">
+	          {% bs_icon 'house-fill' size='1.5em' %}
+	          <p class="text-white text-center tracking-wider px-2 hidden md:block">
+	            Go to Home
+	          </p>
+	        </button>
+	    </div>
+    </div>
+  </div>
+</section>
