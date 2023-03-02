@@ -22,4 +22,4 @@ urlpatterns = [
     path('profile/registration/districts/<int:id>', views.getdistricts, name='districts'),
     path('profile/registration/cities/<int:id>', views.getcities, name='cities'),
     #path('bycity/<int:id>', views.filteredInfo, name='bycity'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
